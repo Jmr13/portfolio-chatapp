@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Realistic Eye with Line Blink</title>
+  <style>
+    .eye-open {
+      animation: eyeOpen 4s infinite;
+    }
+
+    .eye-closed {
+      animation: eyeClosed 4s infinite;
+    }
+
+    @keyframes eyeOpen {
+      0%, 90%, 100% { opacity: 1; }
+      92%, 98%     { opacity: 0; }
+    }
+
+    @keyframes eyeClosed {
+      0%, 90%, 100% { opacity: 0; }
+      92%, 98%      { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h2>Realistic Eye with Line Blink</h2>
+
+  <svg width="300" height="200" viewBox="0 0 300 200">
+    <!-- Open eye group -->
+    <g class="eye-open">
+      <!-- Eye shape (almond) -->
+      <path d="M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z"
+            fill="white" stroke="black" stroke-width="2" />
+
+      <!-- Iris -->
+      <circle cx="150" cy="100" r="30" fill="skyblue" />
+
+      <!-- Pupil -->
+      <circle cx="150" cy="100" r="10" fill="black" />
+    </g>
+
+    <!-- Closed eye (horizontal line) -->
+    <line class="eye-closed" x1="50" y1="100" x2="250" y2="100"
+          stroke="black" stroke-width="3" />
+  </svg>
+</body>
+</html>
