@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Realistic Eye with Line Blink</title>
+  <meta charset="UTF-8" />
+  <title>Eye Blink with Faster Morphing and Clipped Iris/Pupil</title>
   <style>
-    .eye-open {
-      animation: eyeOpen 4s infinite;
-    }
-
-    .eye-closed {
-      animation: eyeClosed 4s infinite;
-    }
-
-    @keyframes eyeOpen {
-      0%, 90%, 100% { opacity: 1; }
-      92%, 98%     { opacity: 0; }
-    }
-
-    @keyframes eyeClosed {
-      0%, 90%, 100% { opacity: 0; }
-      92%, 98%      { opacity: 1; }
+    svg {
+      display: block;
+      margin: 2rem auto;
     }
   </style>
 </head>
 <body>
-  <h2>Realistic Eye with Line Blink</h2>
+  <h2 style="text-align:center;">Eye Blink with Faster Morph and Clipped Iris/Pupil</h2>
 
   <svg width="300" height="200" viewBox="0 0 300 200">
-    <!-- Open eye group -->
-    <g class="eye-open">
-      <!-- Eye shape (almond) -->
-      <path d="M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z"
-            fill="white" stroke="black" stroke-width="2" />
+    <!-- Clip path with morph animation -->
+    <clipPath id="eyeClip">
+      <path fill="white" stroke="none">
+        <animate attributeName="d"
+          dur="2s"
+          repeatCount="indefinite"
+          values="
+            M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z;
+            M 50 100 Q 150 100 250 100 Q 150 100 50 100 Z;
+            M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z"
+          keyTimes="0; 0.5; 1"
+          calcMode="spline"
+          keySplines="0.4 0 1 1; 0 0 0.2 1"
+        />
+      </path>
+    </clipPath>
 
-      <!-- Iris -->
+    <!-- Eye outline path with identical morph animation -->
+    <path fill="white" stroke="black" stroke-width="2">
+      <animate attributeName="d"
+        dur="2s"
+        repeatCount="indefinite"
+        values="
+          M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z;
+          M 50 100 Q 150 100 250 100 Q 150 100 50 100 Z;
+          M 50 100 Q 150 30 250 100 Q 150 170 50 100 Z"
+        keyTimes="0; 0.5; 1"
+        calcMode="spline"
+        keySplines="0.4 0 1 1; 0 0 0.2 1"
+      />
+    </path>
+
+    <!-- Iris and pupil clipped to the morphing eye shape -->
+    <g clip-path="url(#eyeClip)">
       <circle cx="150" cy="100" r="30" fill="skyblue" />
-
-      <!-- Pupil -->
       <circle cx="150" cy="100" r="10" fill="black" />
     </g>
-
-    <!-- Closed eye (horizontal line) -->
-    <line class="eye-closed" x1="50" y1="100" x2="250" y2="100"
-          stroke="black" stroke-width="3" />
   </svg>
 </body>
 </html>
