@@ -1,13 +1,11 @@
-from typing import Union
-
 from fastapi import FastAPI
+from models.conversation import run_conversation
+from schemas.conversation import ConversationRequest, ConversationResponse
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/conversation/", response_model=ConversationResponse)
+def start_conversation(request: ConversationRequest):
+    """Handle the conversation and return a response."""
+    response_content = run_conversation(request.messages)
+    return ConversationResponse(current_time=response_content)
