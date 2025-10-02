@@ -3,13 +3,13 @@ import json
 from typing import List, Dict
 from openai import AzureOpenAI
 from app.external.index import get_resume_link
-from app.core.config import AZURE_ENDPOINT, API_KEY, API_VERSION, DEPLOYMENT_NAME
+from app.core.config import Credential
 
 def run_conversation(messages: List[Dict]) -> Dict:
     client = AzureOpenAI(
-        azure_endpoint = AZURE_ENDPOINT,
-        api_key = API_KEY,
-        api_version = API_VERSION
+        azure_endpoint = Credential.AZURE_ENDPOINT,
+        api_key = Credential.API_KEY,
+        api_version = Credential.API_VERSION
     )
     
     tools = [
@@ -34,7 +34,7 @@ def run_conversation(messages: List[Dict]) -> Dict:
     ]
 
     response = client.chat.completions.create(
-        model= DEPLOYMENT_NAME,
+        model= Credential.DEPLOYMENT_NAME,
         messages=messages,
         tools=tools,
         tool_choice="auto",
@@ -63,7 +63,7 @@ def run_conversation(messages: List[Dict]) -> Dict:
         print("No tool calls were made by the model.")  
 
     final_response = client.chat.completions.create(
-        model = DEPLOYMENT_NAME,
+        model = Credential.DEPLOYMENT_NAME,
         messages=messages,
     )
 
