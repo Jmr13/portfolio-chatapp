@@ -9,11 +9,6 @@ export interface ConversationRequest {
   messages: Message[];
 }
 
-export interface TimeResponse {
-  location: string;
-  current_time: string;
-}
-
 export interface ConversationResponse {
-  current_time: string;
+  message: string;
 }

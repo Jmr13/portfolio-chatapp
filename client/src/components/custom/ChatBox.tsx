@@ -43,7 +43,7 @@ export default function ChatBox() {
       const result: ConversationResponse = await sendMessage({
         messages: [...messages, userMsg]
       });
-      appendAssistantMessage(result.current_time);
+      appendAssistantMessage(result.message);
     } 
     catch (error) {
       console.error("Error sending to API", error);
