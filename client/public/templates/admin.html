@@ -2,32 +2,60 @@
 <html>
 
 <head>
-    <title>Chat</title>
+    <title>Admin Chat</title>
 </head>
 
 <body>
     <h1>Admin Chat</h1>
-    <form action="" onsubmit="sendMessage(event)">
-        <input type="text" id="messageText" autocomplete="off" />
+    <form id="chatForm" onsubmit="sendMessage(event)">
+        <input type="number" id="clientId" placeholder="User ID" required />
+        <input type="text" id="messageText" placeholder="Message" autocomplete="off" required />
         <button>Send</button>
     </form>
-    <ul id='messages'>
-    </ul>
+
+    <ul id="messages"></ul>
+
     <script>
-        var ws = new WebSocket(`ws://localhost:8000/ws/admin/<INSERT_ADMIN_TOKEN>`);
+        const ADMIN_TOKEN = "";
+        const ws = new WebSocket(`ws://localhost:8000/ws/admin/`, ["admin", ADMIN_TOKEN]);
+
+        // Handle incoming messages
         ws.onmessage = function (event) {
-            var messages = document.getElementById('messages')
-            var message = document.createElement('li')
-            var content = document.createTextNode(event.data)
-            message.appendChild(content)
-            messages.appendChild(message)
+            const messages = document.getElementById('messages');
+            const messageItem = document.createElement('li');
+            messageItem.textContent = event.data;
+            messages.appendChild(messageItem);
         };
+
+        // Handle sending messages to specific user
         function sendMessage(event) {
-            var input = document.getElementById("messageText")
-            ws.send(input.value)
-            input.value = ''
-            event.preventDefault()
+            event.preventDefault();
+
+            const clientId = document.getElementById("clientId").value;
+            const messageText = document.getElementById("messageText").value;
+
+            if (!clientId || !messageText) return;
+
+            // Send JSON as expected by backend
+            ws.send(JSON.stringify({
+                client_id: parseInt(clientId),
+                message: messageText
+            }));
+
+            document.getElementById("messageText").value = '';
         }
+
+        ws.onopen = function () {
+            console.log("Connected to admin WebSocket");
+        };
+
+        ws.onclose = function () {
+            console.log("WebSocket connection closed");
+        };
+
+        ws.onerror = function (err) {
+            console.error("WebSocket error:", err);
+        };
     </script>
 </body>
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Chat</title>
+</head>
+
+<body>
+    <h1>WebSocket Chat</h1>
+    <h2>Your ID: <span id="ws-id"></span></h2>
+
+    <form id="chatForm" onsubmit="sendMessage(event)">
+        <input type="text" id="messageText" placeholder="Message" autocomplete="off" required />
+        <button>Send</button>
+    </form>
+
+    <ul id="messages"></ul>
+
+    <script>
+        // Generate a unique client ID
+        const client_id = Date.now();
+        document.querySelector("#ws-id").textContent = client_id;
+
+        // Connect to user WebSocket
+        const ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+
+        // Handle incoming messages from admin
+        ws.onmessage = function (event) {
+            const messages = document.getElementById('messages');
+            const messageItem = document.createElement('li');
+            messageItem.textContent = event.data;
+            messages.appendChild(messageItem);
+        };
+
+        ws.onopen = function () {
+            console.log(`Connected as client #${client_id}`);
+        };
+
+        ws.onclose = function () {
+            console.log("WebSocket connection closed");
+        };
+
+        ws.onerror = function (err) {
+            console.error("WebSocket error:", err);
+        };
+
+        // Send message to admin
+        function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById("messageText");
+            if (!input.value) return;
+
+            ws.send(input.value);
+            input.value = '';
+        }
+    </script>
+</body>
+
+</html>
