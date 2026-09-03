@@ -28,6 +28,8 @@
 | TC-012 | Admin connects with valid token | Connection accepted | |
 | TC-013 | Admin connects from unauthorized IP | Connection rejected | |
 | TC-014 | Admin connects with invalid token | Connection rejected | |
+| TC-021 | Admin enters an active visitor session | Subsequent messages for that visitor are not processed by the AI | |
+| TC-023 | Admin selects End conversation | Conversation ends and visitor is asked for an email address | |
 
 ## UI
 
@@ -36,6 +38,7 @@
 | TC-015 | Send message while request is processing | Send control disabled | |
 | TC-016 | Open application on mobile | UI remains usable | |
 | TC-017 | Move mouse around interactive eye | Eye responds to mouse movement | |
+| TC-022 | AI chat session ends | Visitor is asked for an email address | |
 
 ## Error Handling
 
