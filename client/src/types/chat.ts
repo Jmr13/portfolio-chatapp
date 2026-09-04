@@ -1,14 +1,14 @@
 export type Role = "user" | "assistant";
 
 export interface Message {
-  role: Role;
-  content: string;
+    role: Role;
+    content: string;
 }
 
 export interface ConversationRequest {
-  messages: Message[];
+    messages: Message[];
 }
 
 export interface ConversationResponse {
-  message: string;
+    message: string;
 }

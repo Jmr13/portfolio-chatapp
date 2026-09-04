@@ -1,9 +1,6 @@
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { SendHorizontal } from "lucide-react";
 import EyeWatch from "@/components/custom/EyeWatch";
 import MessageThread from "@/components/custom/MessageThread";
-import ChatBox from "@/components/custom/ChatBox";
+import ChatComposer from "@/components/custom/ChatComposer";
 
 export default function Home() {
   return (
@@ -12,7 +9,7 @@ export default function Home() {
         <EyeWatch />
         <MessageThread />
       </div>
-      <ChatBox />
+      <ChatComposer />
     </>
   );
 }
