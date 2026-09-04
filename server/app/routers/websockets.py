@@ -1,6 +1,6 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from app.services.wsconnection_service import ConnectionManager
-from app.core.config import ALLOWED_ADMIN_IPS, ADMIN_TOKEN
+from app.services.admin_auth_service import is_authorized_admin, parse_admin_protocols
+from app.services.connection_manager import ConnectionManager
 
 router = APIRouter(tags=["websockets"])
 manager = ConnectionManager()
@@ -18,22 +18,16 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 @router.websocket("/ws/admin/")
 async def admin_websocket(websocket: WebSocket):
     client_host = websocket.client.host
-    protocols = websocket.headers.get("sec-websocket-protocol", "")
-    protocol_list = [p.strip() for p in protocols.split(",") if p.strip()]
-
-    if len(protocol_list) < 2:
+    credentials = parse_admin_protocols(
+        websocket.headers.get("sec-websocket-protocol", "")
+    )
+    if credentials is None:
         await websocket.close(code=1008)
         return
 
-    protocol, admin_token = protocol_list[0], protocol_list[1]
+    protocol, admin_token = credentials
 
-    # IP restriction check
-    if client_host not in ALLOWED_ADMIN_IPS:
-        await websocket.close(code=1008)
-        return
-
-    # Token authentication check
-    if admin_token != ADMIN_TOKEN:
+    if not is_authorized_admin(client_host, admin_token):
         await websocket.close(code=1008)
         return
     

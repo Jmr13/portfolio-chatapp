@@ -1,12 +1,12 @@
-import os
-import json
-from typing import List, Dict
-from openai import AzureOpenAI
-from app.core.config import MS_AZURE_ENDPOINT, MS_AZURE_MODEL_NAME, MS_AZURE_DEPLOYMENT_NAME, MS_AZURE_SUBSCRIPTION_KEY, MS_AZURE_API_VERSION
-from app.core.client import create_client
-from app.core.tools import get_tools, handle_tool_calls
+from typing import Any
 
-def run_conversation(messages: List[Dict]) -> Dict:
+from app.core.azure_client import create_client
+from app.core.config import MS_AZURE_DEPLOYMENT_NAME
+from app.core.tool_executor import handle_tool_calls
+from app.core.tool_registry import get_tools
+
+
+def run_conversation(messages: list[dict[str, Any]]) -> Any:
     client = create_client()
     tools = get_tools()
 

@@ -45,7 +45,6 @@ Backend configuration is centralized in `server/app/core/config.py` and uses `py
 Verified environment variables in the current code:
 
 - `MS_AZURE_ENDPOINT`
-- `MS_AZURE_MODEL_NAME`
 - `MS_AZURE_DEPLOYMENT_NAME`
 - `MS_AZURE_SUBSCRIPTION_KEY`
 - `MS_AZURE_API_VERSION`
